@@ -2,14 +2,15 @@
 
 namespace LesBricodeurs\LaravelImage;
 
-use Storage;
 use Illuminate\Http\Request;
-use League\Glide\ServerFactory;
 use Illuminate\Routing\Controller;
 use League\Glide\Responses\LaravelResponseFactory;
+use League\Glide\ServerFactory;
+use Storage;
 
 class ImageController extends Controller
 {
+
     private $server;
 
     public function __construct(Request $request)
@@ -25,7 +26,11 @@ class ImageController extends Controller
 
     public function show($path, $config = '')
     {
-        return $this->server->getImageResponse($path, $this->parseConfig($config));
+        try {
+            return $this->server->getImageResponse($path, $this->parseConfig($config));
+        } catch (\Exception $e) {
+            return abort(404);
+        }
     }
 
     private function parseConfig($config)
@@ -35,7 +40,7 @@ class ImageController extends Controller
         foreach (explode('/', $config) as $modifier) {
             $modifier = explode('-', $modifier);
 
-            if(count($modifier) == 2) {
+            if (count($modifier) == 2) {
                 $modifiers[$modifier[0]] = $modifier[1];
             }
         }
