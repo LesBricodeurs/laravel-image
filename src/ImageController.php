@@ -2,6 +2,7 @@
 
 namespace LesBricodeurs\LaravelImage;
 
+use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use League\Glide\Responses\LaravelResponseFactory;
@@ -27,7 +28,15 @@ class ImageController extends Controller
     public function show($path, $config = '')
     {
         try {
-            return $this->server->getImageResponse($path, $this->parseConfig($config));
+            if ($this->server->cacheFileExists($path, $this->parseConfig($config)) === true) {
+                $path = $this->server->getCachePath($path, $this->parseConfig($config));
+            }
+            else {
+                $path = $this->server->makeImage($path, $this->parseConfig($config));
+                $realpath = Storage::disk(config('images.cache'))->path($path);
+                ImageOptimizer::optimize($realpath);
+            }
+            return $this->server->getResponseFactory()->create($this->server->getCache(), $path);
         } catch (\Exception $e) {
             return abort(404);
         }
