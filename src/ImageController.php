@@ -16,6 +16,7 @@ class ImageController extends Controller
 
     public function __construct(Request $request)
     {
+        session_write_close();
         $this->server = ServerFactory::create([
             'response'          => new LaravelResponseFactory($request),
             'source'            => Storage::disk(config('images.source'))->getDriver(),
