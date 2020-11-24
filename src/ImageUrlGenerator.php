@@ -48,6 +48,10 @@ class ImageUrlGenerator
         if (pathinfo($path, PATHINFO_EXTENSION) == 'svg') {
             return Storage::disk(config('images.source'))->url($path);
         }
+        
+        if (pathinfo($path, PATHINFO_EXTENSION) == 'gif') {
+            return Storage::disk(config('images.source'))->url($path);
+        }
 
         if (is_string($modifiers)) {
             $modifiers = config('images.shortcuts.' . $modifiers) ?: [];
