@@ -4,7 +4,6 @@ namespace LesBricodeurs\LaravelImage;
 
 use Illuminate\Contracts\Foundation\Application;
 use InvalidArgumentException;
-use League\Glide\Responses\LaravelResponseFactory;
 use League\Glide\ServerFactory;
 use Storage;
 
