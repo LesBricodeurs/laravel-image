@@ -5,7 +5,6 @@ namespace LesBricodeurs\LaravelImage;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use League\Glide\Responses\LaravelResponseFactory;
 use League\Glide\ServerFactory;
 use Storage;
 
