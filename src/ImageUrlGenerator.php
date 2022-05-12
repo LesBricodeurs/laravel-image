@@ -64,18 +64,17 @@ class ImageUrlGenerator
             return Storage::disk(config('images.source'))->url($path);
         }
 
-        // Suppression de la mise en cache de Laravel-Image pour permettre la mise en cache du navigateur (Performances)
-        //try {
-            //if ($this->server->cacheFileExists($path, $modifiers) === true) {
-                //$path_cache = $this->server->getCachePath($path, $modifiers);
-                //$disk = Storage::disk(config('images.cache'));
+        try {
+            if ($this->server->cacheFileExists($path, $modifiers) === true) {
+                $path_cache = $this->server->getCachePath($path, $modifiers);
+                $disk = Storage::disk(config('images.cache'));
 
-                //if (filter_var($disk->url($path_cache), FILTER_VALIDATE_URL)) {
-                    //return $disk->url($path_cache);
-                //}
-           //}
-        //} catch (\Exception $e) {
-        //}
+                if (filter_var($disk->url($path_cache), FILTER_VALIDATE_URL)) {
+                    return $disk->url($path_cache);
+                }
+           }
+        } catch (\Exception $e) {
+        }
 
 
         $config = '';
